@@ -1,4 +1,4 @@
-package minnnisu.personalnote.config;
+package minnnisu.personalnote.auth;
 
 import minnnisu.personalnote.constant.AuthenticationType;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;

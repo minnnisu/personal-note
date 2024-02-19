@@ -1,7 +1,7 @@
 package minnnisu.personalnote.config;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import minnnisu.personalnote.auth.LoginFailureHandler;
 import minnnisu.personalnote.user.UserService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
