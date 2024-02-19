@@ -1,12 +1,12 @@
 package minnnisu.personalnote.note;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import minnnisu.personalnote.user.User;
 import minnnisu.personalnote.user.UserNotFoundException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
