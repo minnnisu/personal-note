@@ -21,7 +21,7 @@ public class NoteService {
             throw new UserNotFoundException();
         }
         if(user.isAdmin()){
-            noteRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+            return noteRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
         }
         return noteRepository.findByUserOrderByIdDesc(user);
     }
