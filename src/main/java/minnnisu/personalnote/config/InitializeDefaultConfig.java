@@ -1,10 +1,10 @@
 package minnnisu.personalnote.config;
 
 import lombok.RequiredArgsConstructor;
-import minnnisu.personalnote.note.NoteService;
-import minnnisu.personalnote.notice.NoticeService;
-import minnnisu.personalnote.user.User;
-import minnnisu.personalnote.user.UserService;
+import minnnisu.personalnote.service.NoteService;
+import minnnisu.personalnote.service.NoticeService;
+import minnnisu.personalnote.domain.User;
+import minnnisu.personalnote.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
