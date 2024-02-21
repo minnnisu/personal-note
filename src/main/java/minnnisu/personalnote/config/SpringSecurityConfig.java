@@ -27,6 +27,8 @@ public class SpringSecurityConfig {
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
+                .csrf().disable()
+                .headers().frameOptions().disable().and()
 //                .rememberMe().and()
                 .formLogin()
                 .loginPage("/login")
@@ -42,8 +44,8 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.POST, "/notice").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/notice").hasRole("ADMIN")
                 .antMatchers("/note").hasRole("USER")
-                .antMatchers("/admin").hasRole("ADMIN")
-                .anyRequest().authenticated();
+                .antMatchers("/admin").hasRole("ADMIN");
+//                .anyRequest().authenticated();
         return http.build();
     }
 
