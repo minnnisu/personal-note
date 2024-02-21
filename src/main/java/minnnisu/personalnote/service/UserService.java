@@ -5,6 +5,7 @@ import minnnisu.personalnote.constant.ErrorCode;
 import minnnisu.personalnote.domain.User;
 import minnnisu.personalnote.dto.SignUpRequestDto;
 import minnnisu.personalnote.exception.CustomErrorException;
+import minnnisu.personalnote.exception.SignupErrorException;
 import minnnisu.personalnote.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -50,11 +51,11 @@ public class UserService {
 
     public void validateSignup(SignUpRequestDto signUpRequestDto) {
         if (userRepository.findByUsername(signUpRequestDto.getUsername()) != null) {
-            throw new CustomErrorException(ErrorCode.DuplicatedUserName);
+            throw new SignupErrorException("username", ErrorCode.DuplicatedUserName);
         }
 
         if(!signUpRequestDto.getPassword().equals(signUpRequestDto.getRepeatedPassword())) {
-            throw new CustomErrorException(ErrorCode.NotMatchedPassword);
+            throw new SignupErrorException("repeatedPassword", ErrorCode.NotMatchedPassword);
         }
     }
 

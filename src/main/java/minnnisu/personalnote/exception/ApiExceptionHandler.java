@@ -2,6 +2,7 @@ package minnnisu.personalnote.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import minnnisu.personalnote.dto.ErrorResponseDto;
+import minnnisu.personalnote.dto.SignupErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -25,16 +26,24 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(errorResponseDto, e.getHttpStatus());
     }
 
+    @ExceptionHandler(SignupErrorException.class)
+    protected ResponseEntity<SignupErrorResponseDto> handleCustomErrorException(SignupErrorException e) {
+        SignupErrorResponseDto errorResponseDto = new SignupErrorResponseDto(
+                Map.of(e.getInputTarget(), e.getMessage())
+        );
+        return new ResponseEntity<>(errorResponseDto, e.getHttpStatus());
+    }
+
     @ExceptionHandler(BindException.class)
-    protected ResponseEntity<?> handleBindException(org.springframework.validation.BindException e) {
+    protected ResponseEntity<SignupErrorResponseDto> handleBindException(org.springframework.validation.BindException e) {
         List<FieldError> list = e.getBindingResult().getFieldErrors();
         Map<String, String> errorMap = new HashMap<>();
-
         for (FieldError error : list){
             errorMap.put(error.getField(), error.getDefaultMessage());
         }
 
-        return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
+        SignupErrorResponseDto signupErrorResponseDto = new SignupErrorResponseDto(errorMap);
+        return new ResponseEntity<>(signupErrorResponseDto, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

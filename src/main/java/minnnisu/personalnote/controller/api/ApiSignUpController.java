@@ -8,10 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -26,7 +23,7 @@ public class ApiSignUpController {
     private final UserService userService;
     @PostMapping
     public ResponseEntity<?> signup(
-            @Valid @ModelAttribute SignUpRequestDto signUpRequestDto
+            @Valid @RequestBody SignUpRequestDto signUpRequestDto
     ) {
         userService.signup(signUpRequestDto);
         return new ResponseEntity<>(Map.of(
