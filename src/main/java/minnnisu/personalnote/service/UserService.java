@@ -1,8 +1,10 @@
 package minnnisu.personalnote.service;
 
 import lombok.RequiredArgsConstructor;
+import minnnisu.personalnote.constant.ErrorCode;
 import minnnisu.personalnote.domain.User;
-import minnnisu.personalnote.exception.AlreadyRegisteredUserException;
+import minnnisu.personalnote.dto.SignUpRequestDto;
+import minnnisu.personalnote.exception.CustomErrorException;
 import minnnisu.personalnote.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,30 +17,45 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public User signup(
-            String username,
-            String password
+            SignUpRequestDto signUpRequestDto
     ) {
-        if (userRepository.findByUsername(username) != null) {
-            throw new AlreadyRegisteredUserException();
-        }
-        return userRepository.save(new User(username, passwordEncoder.encode(password), "ROLE_USER"));
+        validateSignup(signUpRequestDto);
+        User user = new User(
+                signUpRequestDto.getUsername(),
+                passwordEncoder.encode(signUpRequestDto.getPassword()),
+                signUpRequestDto.getName(),
+                signUpRequestDto.getEmail(),
+                "ROLE_USER"
+
+        );
+        return userRepository.save(user);
     }
 
-    /**
-     * 관리자 등록
-     *
-     * @param username username
-     * @param password password
-     * @return 관리자 권한을 가지고 있는 유저
-     */
+
+
     public User signupAdmin(
-            String username,
-            String password
+            SignUpRequestDto signUpRequestDto
     ) {
-        if (userRepository.findByUsername(username) != null) {
-            throw new AlreadyRegisteredUserException();
+        validateSignup(signUpRequestDto);
+        User user = new User(
+                signUpRequestDto.getUsername(),
+                passwordEncoder.encode(signUpRequestDto.getPassword()),
+                signUpRequestDto.getName(),
+                signUpRequestDto.getEmail(),
+                "ROLE_ADMIN"
+
+        );
+        return userRepository.save(user);
+    }
+
+    public void validateSignup(SignUpRequestDto signUpRequestDto) {
+        if (userRepository.findByUsername(signUpRequestDto.getUsername()) != null) {
+            throw new CustomErrorException(ErrorCode.DuplicatedUserName);
         }
-        return userRepository.save(new User(username, passwordEncoder.encode(password), "ROLE_ADMIN"));
+
+        if(!signUpRequestDto.getPassword().equals(signUpRequestDto.getRepeatedPassword())) {
+            throw new CustomErrorException(ErrorCode.NotMatchedPassword);
+        }
     }
 
     public User findByUsername(String username) {

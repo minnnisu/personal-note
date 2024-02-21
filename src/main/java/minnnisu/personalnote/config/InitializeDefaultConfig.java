@@ -1,6 +1,7 @@
 package minnnisu.personalnote.config;
 
 import lombok.RequiredArgsConstructor;
+import minnnisu.personalnote.dto.SignUpRequestDto;
 import minnnisu.personalnote.service.NoteService;
 import minnnisu.personalnote.service.NoticeService;
 import minnnisu.personalnote.domain.User;
@@ -26,7 +27,15 @@ public class InitializeDefaultConfig {
      */
     @Bean
     public void initializeDefaultUser() {
-        User user = userService.signup("user", "user");
+        SignUpRequestDto signUpRequestDto = SignUpRequestDto
+                .builder()
+                .username("user1")
+                .password("user12345#")
+                .repeatedPassword("user12345#")
+                .name("minnnisu")
+                .email("mine1234@naver.com")
+                .build();
+        User user = userService.signup(signUpRequestDto);
         noteService.saveNote(user, "테스트", "테스트입니다.");
         noteService.saveNote(user, "테스트2", "테스트2입니다.");
         noteService.saveNote(user, "테스트3", "테스트3입니다.");
@@ -38,7 +47,15 @@ public class InitializeDefaultConfig {
      */
     @Bean
     public void initializeDefaultAdmin() {
-        userService.signupAdmin("admin", "admin");
+        SignUpRequestDto signUpRequestDto = SignUpRequestDto
+                .builder()
+                .username("admin")
+                .password("admin12345#")
+                .repeatedPassword("admin12345#")
+                .name("minnnisu")
+                .email("mine1234@naver.com")
+                .build();
+        userService.signupAdmin(signUpRequestDto);
         noticeService.saveNotice("환영합니다.", "환영합니다 여러분");
         noticeService.saveNotice("노트 작성 방법 공지", "1. 회원가입\n2. 로그인\n3. 노트 작성\n4. 저장\n* 본인 외에는 게시글을 볼 수 없습니다.");
     }
