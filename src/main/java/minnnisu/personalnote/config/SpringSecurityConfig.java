@@ -40,12 +40,18 @@ public class SpringSecurityConfig {
                 .logoutSuccessUrl("/")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/home", "/signup", "/login").permitAll()
+                .antMatchers(
+                        "/",
+                        "/home",
+                        "/signup",
+                        "/login",
+                        "/api/signup"
+                ).permitAll()
                 .antMatchers(HttpMethod.POST, "/notice").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/notice").hasRole("ADMIN")
                 .antMatchers("/note").hasRole("USER")
-                .antMatchers("/admin").hasRole("ADMIN");
-//                .anyRequest().authenticated();
+                .antMatchers("/admin").hasRole("ADMIN")
+                .anyRequest().authenticated();
         return http.build();
     }
 

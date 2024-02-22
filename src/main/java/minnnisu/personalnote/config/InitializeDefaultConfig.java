@@ -2,6 +2,7 @@ package minnnisu.personalnote.config;
 
 import lombok.RequiredArgsConstructor;
 import minnnisu.personalnote.dto.SignUpRequestDto;
+import minnnisu.personalnote.dto.SignupResponseDto;
 import minnnisu.personalnote.service.NoteService;
 import minnnisu.personalnote.service.NoticeService;
 import minnnisu.personalnote.domain.User;
@@ -35,11 +36,11 @@ public class InitializeDefaultConfig {
                 .name("minnnisu")
                 .email("mine1234@naver.com")
                 .build();
-        User user = userService.signup(signUpRequestDto);
-        noteService.saveNote(user, "테스트", "테스트입니다.");
-        noteService.saveNote(user, "테스트2", "테스트2입니다.");
-        noteService.saveNote(user, "테스트3", "테스트3입니다.");
-        noteService.saveNote(user, "여름 여행계획", "여름 여행계획 작성중...");
+        SignupResponseDto signupResponseDto = userService.signup(signUpRequestDto);
+//        noteService.saveNote(user, "테스트", "테스트입니다.");
+//        noteService.saveNote(user, "테스트2", "테스트2입니다.");
+//        noteService.saveNote(user, "테스트3", "테스트3입니다.");
+//        noteService.saveNote(user, "여름 여행계획", "여름 여행계획 작성중...");
     }
 
     /**
