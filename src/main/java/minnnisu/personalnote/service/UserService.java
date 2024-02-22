@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import minnnisu.personalnote.constant.ErrorCode;
 import minnnisu.personalnote.domain.User;
 import minnnisu.personalnote.dto.SignUpRequestDto;
-import minnnisu.personalnote.exception.CustomErrorException;
+import minnnisu.personalnote.dto.SignupResponseDto;
 import minnnisu.personalnote.exception.SignupErrorException;
 import minnnisu.personalnote.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +17,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public User signup(
+    public SignupResponseDto signup(
             SignUpRequestDto signUpRequestDto
     ) {
         validateSignup(signUpRequestDto);
@@ -29,7 +29,9 @@ public class UserService {
                 "ROLE_USER"
 
         );
-        return userRepository.save(user);
+
+        User newUser = userRepository.save(user);
+        return new SignupResponseDto(newUser);
     }
 
 
