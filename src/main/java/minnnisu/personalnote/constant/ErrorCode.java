@@ -20,7 +20,7 @@ public enum ErrorCode {
             HttpStatus.INTERNAL_SERVER_ERROR, "내부적으로 발생한 시스템 문제로 인해 요청을 처리할 수 없습니다. 관리자에게 문의하세요."
     ),
     UsernameNotFoundException(
-            HttpStatus.BAD_REQUEST, "계정이 존재하지 않습니다. 회원가입 진행 후 로그인 해주세요."
+            HttpStatus.NOT_FOUND, "계정이 존재하지 않습니다. 회원가입 진행 후 로그인 해주세요."
     ),
     AuthenticationCredentialsNotFoundException(
             HttpStatus.FORBIDDEN, "인증 요청이 거부되었습니다. 관리자에게 문의하세요."
