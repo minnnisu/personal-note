@@ -14,7 +14,9 @@ import java.util.Collections;
 @Entity
 @Table
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class User implements UserDetails {
 
     @Id
