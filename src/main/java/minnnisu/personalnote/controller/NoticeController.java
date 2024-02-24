@@ -2,7 +2,7 @@ package minnnisu.personalnote.controller;
 
 import lombok.RequiredArgsConstructor;
 import minnnisu.personalnote.domain.Notice;
-import minnnisu.personalnote.dto.NoteRegisterDto;
+import minnnisu.personalnote.dto.note.NoteRequestDto;
 import minnnisu.personalnote.service.NoticeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +25,7 @@ public class NoticeController {
     }
 
     @PostMapping
-    public String postNotice(@ModelAttribute NoteRegisterDto noteDto) {
+    public String postNotice(@ModelAttribute NoteRequestDto noteDto) {
         noticeService.saveNotice(noteDto.getTitle(), noteDto.getContent());
         return "redirect:notice";
     }

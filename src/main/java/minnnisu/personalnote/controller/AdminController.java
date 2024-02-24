@@ -1,7 +1,7 @@
 package minnnisu.personalnote.controller;
 
 import lombok.RequiredArgsConstructor;
-import minnnisu.personalnote.domain.Note;
+import minnnisu.personalnote.dto.note.NoteDto;
 import minnnisu.personalnote.service.NoteService;
 import minnnisu.personalnote.domain.User;
 import org.springframework.security.core.Authentication;
@@ -26,7 +26,7 @@ public class AdminController {
     @GetMapping
     public String getNoteAdmin(Authentication authentication, Model model) {
         User user = (User) authentication.getPrincipal();
-        List<Note> notes = noteService.findByUser(user);
+        List<NoteDto> notes = noteService.findByUser(user);
         model.addAttribute("notes", notes);
         return "admin/index";
     }

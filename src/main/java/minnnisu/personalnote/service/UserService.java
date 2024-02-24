@@ -3,9 +3,9 @@ package minnnisu.personalnote.service;
 import lombok.RequiredArgsConstructor;
 import minnnisu.personalnote.constant.ErrorCode;
 import minnnisu.personalnote.domain.User;
-import minnnisu.personalnote.dto.SignUpRequestDto;
-import minnnisu.personalnote.dto.SignupResponseDto;
-import minnnisu.personalnote.exception.SignupErrorException;
+import minnnisu.personalnote.dto.signup.SignUpRequestDto;
+import minnnisu.personalnote.dto.signup.SignupResponseDto;
+import minnnisu.personalnote.exception.NotValidRequestErrorException;
 import minnnisu.personalnote.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -53,11 +53,11 @@ public class UserService {
 
     public void validateSignup(SignUpRequestDto signUpRequestDto) {
         if (userRepository.findByUsername(signUpRequestDto.getUsername()) != null) {
-            throw new SignupErrorException("username", ErrorCode.DuplicatedUserName);
+            throw new NotValidRequestErrorException("username", ErrorCode.DuplicatedUserName);
         }
 
         if(!signUpRequestDto.getPassword().equals(signUpRequestDto.getRepeatedPassword())) {
-            throw new SignupErrorException("repeatedPassword", ErrorCode.NotMatchedPassword);
+            throw new NotValidRequestErrorException("repeatedPassword", ErrorCode.NotMatchedPassword);
         }
     }
 

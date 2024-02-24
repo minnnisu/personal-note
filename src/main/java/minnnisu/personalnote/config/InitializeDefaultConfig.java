@@ -1,11 +1,10 @@
 package minnnisu.personalnote.config;
 
 import lombok.RequiredArgsConstructor;
-import minnnisu.personalnote.dto.SignUpRequestDto;
-import minnnisu.personalnote.dto.SignupResponseDto;
+import minnnisu.personalnote.dto.signup.SignUpRequestDto;
+import minnnisu.personalnote.dto.signup.SignupResponseDto;
 import minnnisu.personalnote.service.NoteService;
 import minnnisu.personalnote.service.NoticeService;
-import minnnisu.personalnote.domain.User;
 import minnnisu.personalnote.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
