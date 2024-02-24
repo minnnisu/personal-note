@@ -2,23 +2,17 @@ package minnnisu.personalnote.service;
 
 import minnnisu.personalnote.constant.ErrorCode;
 import minnnisu.personalnote.domain.User;
-import minnnisu.personalnote.dto.SignUpRequestDto;
-import minnnisu.personalnote.dto.SignupResponseDto;
-import minnnisu.personalnote.exception.SignupErrorException;
+import minnnisu.personalnote.dto.signup.SignUpRequestDto;
+import minnnisu.personalnote.dto.signup.SignupResponseDto;
+import minnnisu.personalnote.exception.NotValidRequestErrorException;
 import minnnisu.personalnote.repository.UserRepository;
-import minnnisu.personalnote.service.UserService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
@@ -72,7 +66,6 @@ class UserServiceTest {
         // When
         SignupResponseDto signupResponseDto = sut.signup(signUpRequestDto);
 
-        // Then
         Assertions.assertThat(signupResponseDto.getMessage())
                 .isEqualTo("회원가입에 성공하였습니다.");
         Assertions.assertThat(signupResponseDto.getUserInformation().getUsername())
@@ -116,7 +109,7 @@ class UserServiceTest {
         // When
         Throwable thrown = catchThrowable(() -> sut.signup(signUpRequestDto));
         Assertions.assertThat(thrown)
-                .isInstanceOf(SignupErrorException.class)
+                .isInstanceOf(NotValidRequestErrorException.class)
                 .hasMessage(ErrorCode.DuplicatedUserName.getMessage());
     }
 
@@ -142,7 +135,7 @@ class UserServiceTest {
         // When
         Throwable thrown = catchThrowable(() -> sut.signup(signUpRequestDto));
         Assertions.assertThat(thrown)
-                .isInstanceOf(SignupErrorException.class)
+                .isInstanceOf(NotValidRequestErrorException.class)
                 .hasMessage(ErrorCode.NotMatchedPassword.getMessage());
     }
 

@@ -1,6 +1,7 @@
 package minnnisu.personalnote.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import minnnisu.personalnote.constant.ErrorCode;
 import minnnisu.personalnote.dto.ErrorResponseDto;
 import minnnisu.personalnote.dto.NotValidRequestErrorResponseDto;
 import org.springframework.http.HttpStatus;
@@ -52,12 +53,13 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected String HandleGeneralException(Exception e, HttpServletRequest request, Model model){
-        log.info("url: {}, message: {}",
-                request.getRequestURI(), e.getMessage());
+    protected ResponseEntity<ErrorResponseDto> HandleGeneralException(Exception e){
+        ErrorResponseDto errorResponseDto =
+                ErrorResponseDto.of(
+                        ErrorCode.InternalServerError.name(),
+                        ErrorCode.InternalServerError.getMessage()
+                );
 
-        model.addAttribute("message", e.getMessage());
-        return "error";
+        return new ResponseEntity<>(errorResponseDto, ErrorCode.InternalServerError.getHttpStatus());
     }
 }

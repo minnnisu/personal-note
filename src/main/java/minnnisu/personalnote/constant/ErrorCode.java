@@ -36,6 +36,9 @@ public enum ErrorCode {
     ),
     NoSuchNoteExistException(
             HttpStatus.NOT_FOUND, "존재하지 않은 노트입니다."
+    ),
+    InternalServerError(
+            HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 오류가 발생하였습니다. 문제가 지속되면 관리자에게 문의하세요."
     );
 
 
