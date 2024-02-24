@@ -1,8 +1,8 @@
 package minnnisu.personalnote.controller;
 
 import lombok.RequiredArgsConstructor;
-import minnnisu.personalnote.domain.Note;
-import minnnisu.personalnote.dto.NoteRegisterDto;
+import lombok.extern.slf4j.Slf4j;
+import minnnisu.personalnote.dto.note.NoteViewResponseDto;
 import minnnisu.personalnote.service.NoteService;
 import minnnisu.personalnote.domain.User;
 import org.springframework.security.core.Authentication;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@Slf4j
 @RequestMapping("/note")
 @RequiredArgsConstructor
 public class NoteController {
@@ -20,25 +21,14 @@ public class NoteController {
 
     @GetMapping
     public String getNote(Authentication authentication, Model model) {
+        log.info("GET /note");
         User user = (User) authentication.getPrincipal();
-        List<Note> notes = noteService.findByUser(user);
+        List<NoteViewResponseDto> notes = noteService.findByUser(user)
+                .stream()
+                .map(NoteViewResponseDto::fromDto)
+                .toList();
         model.addAttribute("notes", notes);
 
         return "note/index";
     }
-
-    @PostMapping
-    public String saveNote(Authentication authentication, @ModelAttribute NoteRegisterDto noteDto){
-        User user = (User) authentication.getPrincipal();
-        noteService.saveNote(user, noteDto.getTitle(), noteDto.getContent());
-        return "redirect:note";
-    }
-
-    @DeleteMapping
-    public String deleteNote(Authentication authentication, @RequestParam Long id){
-        User user = (User) authentication.getPrincipal();
-        noteService.deleteNote(user, id);
-        return "redirect:note";
-    }
-
 }

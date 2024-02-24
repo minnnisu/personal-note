@@ -45,11 +45,13 @@ public class SpringSecurityConfig {
                         "/home",
                         "/signup",
                         "/login",
-                        "/api/signup"
+                        "/api/signup",
+                        "/h2-console"
                 ).permitAll()
                 .antMatchers(HttpMethod.POST, "/notice").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/notice").hasRole("ADMIN")
                 .antMatchers("/note").hasRole("USER")
+                .antMatchers("/api/note").hasRole("USER")
                 .antMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().authenticated();
         return http.build();

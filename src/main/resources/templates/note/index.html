@@ -44,25 +44,22 @@
                   aria-label="Close">
           </button>
         </div>
-        <form
-                th:action="@{/note}"
-                method="post"
-        >
+        <div>
           <div class="modal-body">
             <div class="mb-3">
-              <label for="title" class="col-form-label">제목</label>
-              <input type="text" class="form-control" id="title" name="title">
+              <label for="note-input-modal-title" class="col-form-label">제목</label>
+              <input type="text" class="form-control" id="note-input-modal-title">
             </div>
             <div class="mb-3">
-              <label for="content" class="col-form-label">내용</label>
-              <textarea class="form-control" rows="20" id="content" name="content"></textarea>
+              <label for="note-input-modal-content" class="col-form-label">내용</label>
+              <textarea class="form-control" rows="20" id="note-input-modal-content"></textarea>
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">종료</button>
-            <button type="submit" class="btn btn-primary">저장</button>
+            <button class="btn btn-primary" onclick="saveNote()">저장</button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>
@@ -71,23 +68,22 @@
   <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
       <!-- 노트 개수만큼 반복 -->
-      <div class="border border-dark" th:each="note : ${notes}">
+      <div class="border border-dark note-container" th:value="${note.id}" th:each="note : ${notes}">
         <h2 th:text="${note.title}"></h2>
         <div>
           <p th:text="${note.content}" style="white-space: pre-wrap;"></p>
-          <form th:action="@{/note}" th:method="delete">
-            <input type="hidden" name="id" th:value="${note.id}">
-            <!-- 노트 삭제 버튼 -->
-            <button type="submit" class="btn btn-secondary">삭제</button>
+          <div class="note-container-footer">
+            <button class="btn btn-secondary delete-btn">삭제</button>
             <!-- 작성일자 표시 -->
             <span style="margin: 10px 0px;">Posted On
               <strong th:text="${#temporals.format(note.createdAt, 'yyyy-MM-dd')}"></strong>
             </span>
-          </form>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<script src="/js/note/index.js"></script>
 </body>
 </html>

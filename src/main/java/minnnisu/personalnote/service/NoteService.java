@@ -1,11 +1,13 @@
 package minnnisu.personalnote.service;
 
 import lombok.RequiredArgsConstructor;
+import minnnisu.personalnote.constant.ErrorCode;
 import minnnisu.personalnote.domain.Note;
+import minnnisu.personalnote.dto.note.NoteDto;
+import minnnisu.personalnote.dto.note.NoteRequestDto;
+import minnnisu.personalnote.exception.CustomErrorException;
 import minnnisu.personalnote.repository.NoteRepository;
 import minnnisu.personalnote.domain.User;
-import minnnisu.personalnote.exception.UserNotFoundException;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,32 +20,37 @@ public class NoteService {
 
     private final NoteRepository noteRepository;
 
-    public List<Note> findByUser(User user) {
-        if(user == null){
-            throw new UserNotFoundException();
-        }
-        if(user.isAdmin()){
-            return noteRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
-        }
-        return noteRepository.findByUserOrderByIdDesc(user);
+    public List<NoteDto> findByUser(User user) {
+        validateUserExist(user);
+        List<Note> notes = noteRepository.findByUserOrderByIdDesc(user);
+        return notes
+                .stream()
+                .map(NoteDto::fromEntity)
+                .toList();
+
     }
 
-    public Note saveNote(User user, String title, String content) {
-       if(user == null) {
-           throw new UserNotFoundException();
-       }
+    public NoteDto saveNote(User user, NoteRequestDto noteRequestDto) {
+        validateUserExist(user);
+        Note note = noteRepository.save(new Note(
+                noteRequestDto.getTitle(),
+                noteRequestDto.getContent(),
+                user
+        ));
 
-       return noteRepository.save(new Note(title, content, user));
+        return NoteDto.fromEntity(note);
     }
 
     public void deleteNote(User user, Long noteId) {
-       if(user == null){
-           throw new UserNotFoundException();
-        }
+        validateUserExist(user);
+        Note note = noteRepository.findByIdAndUser(noteId, user)
+                .orElseThrow(() -> new CustomErrorException(ErrorCode.NoSuchNoteExistException));
+        noteRepository.delete(note);
+    }
 
-       Note note = noteRepository.findByIdAndUser(noteId, user);
-       if (note != null){
-           noteRepository.delete(note);
-       }
+    void validateUserExist(User user){
+        if(user == null){
+            throw new CustomErrorException(ErrorCode.UserNotFoundException);
+        }
     }
 }
