@@ -2,7 +2,7 @@ package minnnisu.personalnote.controller.api;
 
 import lombok.RequiredArgsConstructor;
 import minnnisu.personalnote.domain.User;
-import minnnisu.personalnote.dto.note.NoteApiResponseDto;
+import minnnisu.personalnote.dto.note.NoteResponseDto;
 import minnnisu.personalnote.dto.note.NoteDto;
 import minnnisu.personalnote.dto.note.NoteRequestDto;
 import minnnisu.personalnote.service.NoteService;
@@ -20,10 +20,10 @@ public class ApiNoteController {
     private final NoteService noteService;
 
     @PostMapping
-    public ResponseEntity<NoteApiResponseDto> saveNote(Authentication authentication, @Valid @RequestBody NoteRequestDto noteRequestDto){
+    public ResponseEntity<NoteResponseDto> saveNote(Authentication authentication, @Valid @RequestBody NoteRequestDto noteRequestDto){
         User user = (User) authentication.getPrincipal();
         NoteDto noteDto = noteService.saveNote(user, noteRequestDto);
-        return new ResponseEntity<>(NoteApiResponseDto.fromDto(noteDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(NoteResponseDto.fromDto(noteDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping

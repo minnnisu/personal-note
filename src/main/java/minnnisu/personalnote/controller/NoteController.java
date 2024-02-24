@@ -2,7 +2,7 @@ package minnnisu.personalnote.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import minnnisu.personalnote.dto.note.NoteViewResponseDto;
+import minnnisu.personalnote.dto.note.NoteResponseDto;
 import minnnisu.personalnote.service.NoteService;
 import minnnisu.personalnote.domain.User;
 import org.springframework.security.core.Authentication;
@@ -23,9 +23,9 @@ public class NoteController {
     public String getNote(Authentication authentication, Model model) {
         log.info("GET /note");
         User user = (User) authentication.getPrincipal();
-        List<NoteViewResponseDto> notes = noteService.findByUser(user)
+        List<NoteResponseDto> notes = noteService.findByUser(user)
                 .stream()
-                .map(NoteViewResponseDto::fromDto)
+                .map(NoteResponseDto::fromDto)
                 .toList();
         model.addAttribute("notes", notes);
 
