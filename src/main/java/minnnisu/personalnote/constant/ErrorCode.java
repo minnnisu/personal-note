@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @Getter
 public enum ErrorCode {
+    NotValidRequestException(
+            HttpStatus.BAD_REQUEST, "유효하지 않은 요청입니다."
+    ),
     DuplicatedUserName(
             HttpStatus.CONFLICT, "중복된 아이디입니다."
     ),
@@ -19,6 +22,9 @@ public enum ErrorCode {
     InternalAuthenticationServiceException(
             HttpStatus.INTERNAL_SERVER_ERROR, "내부적으로 발생한 시스템 문제로 인해 요청을 처리할 수 없습니다. 관리자에게 문의하세요."
     ),
+    UserNotFoundException(
+            HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다."
+    ),
     UsernameNotFoundException(
             HttpStatus.NOT_FOUND, "계정이 존재하지 않습니다. 회원가입 진행 후 로그인 해주세요."
     ),
@@ -27,7 +33,11 @@ public enum ErrorCode {
     ),
     UnknownException(
             HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 이유로 로그인에 실패하였습니다 관리자에게 문의하세요."
+    ),
+    NoSuchNoteExistException(
+            HttpStatus.NOT_FOUND, "존재하지 않은 노트입니다."
     );
+
 
     private final HttpStatus httpStatus;
     private final String message;

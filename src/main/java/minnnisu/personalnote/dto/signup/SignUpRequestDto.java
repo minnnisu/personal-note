@@ -1,4 +1,4 @@
-package minnnisu.personalnote.dto;
+package minnnisu.personalnote.dto.signup;
 
 import lombok.*;
 
