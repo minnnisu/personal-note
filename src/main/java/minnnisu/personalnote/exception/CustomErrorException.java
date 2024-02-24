@@ -6,10 +6,10 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public class CustomErrorException extends RuntimeException{
-    private final HttpStatus httpStatus;
+    private final ErrorCode errorCode;
 
     public CustomErrorException(ErrorCode errorCode){
         super(errorCode.getMessage());
-        this.httpStatus = errorCode.getHttpStatus();
+        this.errorCode = errorCode;
     }
 }
