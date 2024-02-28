@@ -11,15 +11,15 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @Builder
-public class NoteResponseDto {
+public class NoteSaveResponseDto {
     private Long id;
     private String title;
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static NoteResponseDto fromDto(NoteDto noteDto) {
-        return NoteResponseDto.builder()
+    public static NoteSaveResponseDto fromDto(NoteDto noteDto) {
+        return NoteSaveResponseDto.builder()
                 .id(noteDto.getId())
                 .title(noteDto.getTitle())
                 .content(noteDto.getContent())
