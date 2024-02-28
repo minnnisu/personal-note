@@ -16,6 +16,7 @@ import java.util.Collections;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 @ToString
 public class User implements UserDetails {
 
@@ -71,6 +72,23 @@ public class User implements UserDetails {
         return true;
     }
 
+    public static User of(
+            Long id,
+            String username,
+            String password,
+            String authority,
+            String name,
+            String email
+    ){
+        return User.builder()
+                .id(id)
+                .username(username)
+                .password(password)
+                .authority(authority)
+                .name(name)
+                .email(email)
+                .build();
+    }
 
 
 
