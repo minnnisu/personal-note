@@ -26,4 +26,21 @@ public class NoteDto {
                 .updatedAt(note.getUpdatedAt())
                 .build();
     }
+
+    public static NoteDto of(
+            Long id,
+            String title,
+            String content,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
+    ){
+        return NoteDto.builder()
+                .id(id)
+                .title(title)
+                .content(content)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
+    }
+
 }
