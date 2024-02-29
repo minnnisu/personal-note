@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode
 public class NoteDto {
     private Long id;
     private String title;
@@ -33,7 +34,7 @@ public class NoteDto {
             String content,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
-    ){
+    ) {
         return NoteDto.builder()
                 .id(id)
                 .title(title)
