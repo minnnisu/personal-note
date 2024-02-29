@@ -6,18 +6,19 @@ import minnnisu.personalnote.dto.ErrorResponseDto;
 import minnnisu.personalnote.dto.NotValidRequestErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
-@RestControllerAdvice
+@RestControllerAdvice(annotations = {RestController.class})
 public class ApiExceptionHandler {
     @ExceptionHandler(CustomErrorException.class)
     protected ResponseEntity<ErrorResponseDto> handleCustomErrorException(CustomErrorException e) {
@@ -25,7 +26,44 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(errorResponseDto, e.getErrorCode().getHttpStatus());
     }
 
-    // TODO
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    protected ResponseEntity<NotValidRequestErrorResponseDto> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        NotValidRequestErrorResponseDto.ErrorDescription errorDescription
+                = NotValidRequestErrorResponseDto.ErrorDescription.of(e.getParameter().getParameterName(), ErrorCode.QueryParamTypeMismatchError.getMessage());
+        List<NotValidRequestErrorResponseDto.ErrorDescription> ErrorDescriptions
+                = List.of(errorDescription);
+
+        NotValidRequestErrorResponseDto notValidRequestErrorResponseDto
+                = NotValidRequestErrorResponseDto.of(ErrorDescriptions);
+
+        return new ResponseEntity<>(notValidRequestErrorResponseDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    protected ResponseEntity<NotValidRequestErrorResponseDto> handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+        NotValidRequestErrorResponseDto.ErrorDescription errorDescription
+                = NotValidRequestErrorResponseDto.ErrorDescription.of(e.getParameterName(), ErrorCode.MissingQueryParamError.getMessage());
+        List<NotValidRequestErrorResponseDto.ErrorDescription> ErrorDescriptions
+                = List.of(errorDescription);
+
+        NotValidRequestErrorResponseDto notValidRequestErrorResponseDto
+                = NotValidRequestErrorResponseDto.of(ErrorDescriptions);
+
+        return new ResponseEntity<>(notValidRequestErrorResponseDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    protected ResponseEntity<ErrorResponseDto> handleAccessDeniedException(AccessDeniedException e) {
+        ErrorResponseDto errorResponseDto =
+                ErrorResponseDto.of(
+                        ErrorCode.AccessDeniedError.name(),
+                        ErrorCode.AccessDeniedError.getMessage()
+                );
+
+        return new ResponseEntity<>(errorResponseDto, ErrorCode.AccessDeniedError.getHttpStatus());
+    }
+
+
     @ExceptionHandler(NotValidRequestErrorException.class)
     protected ResponseEntity<NotValidRequestErrorResponseDto> handleNotValidRequestErrorException(NotValidRequestErrorException e) {
         NotValidRequestErrorResponseDto.ErrorDescription errorDescription
@@ -53,7 +91,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ErrorResponseDto> HandleGeneralException(Exception e){
+    protected ResponseEntity<ErrorResponseDto> HandleGeneralException(Exception e) {
         ErrorResponseDto errorResponseDto =
                 ErrorResponseDto.of(
                         ErrorCode.InternalServerError.name(),
