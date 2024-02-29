@@ -46,4 +46,22 @@ public class Note {
         this.content = content;
         this.user = user;
     }
+
+    public static Note of(
+            Long id,
+            String title,
+            String content,
+            User user,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
+    ) {
+        return Note.builder()
+                .id(id)
+                .title(title)
+                .content(content)
+                .user(user)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
+    }
 }
