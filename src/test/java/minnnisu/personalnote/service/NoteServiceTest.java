@@ -1,102 +1,162 @@
 package minnnisu.personalnote.service;
 
+import minnnisu.personalnote.constant.ErrorCode;
 import minnnisu.personalnote.domain.Note;
-import minnnisu.personalnote.repository.NoteRepository;
-import minnnisu.personalnote.service.NoteService;
 import minnnisu.personalnote.domain.User;
-import minnnisu.personalnote.repository.UserRepository;
+import minnnisu.personalnote.dto.note.NoteDto;
+import minnnisu.personalnote.dto.note.NoteRequestDto;
+import minnnisu.personalnote.exception.CustomErrorException;
+import minnnisu.personalnote.repository.NoteRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
-@SpringBootTest
-@ActiveProfiles(profiles = "test")
-@Transactional
+@ExtendWith(MockitoExtension.class)
 class NoteServiceTest {
+    @InjectMocks
+    NoteService sut;
 
-    @Autowired
-    private NoteService noteService;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private NoteRepository noteRepository;
+    @Mock
+    NoteRepository noteRepository;
 
     @Test
-    void findByUser_유저가_게시물조회() {
-        // given
-        User user = userRepository.save(new User("username", "password", "ROLE_USER"));
-        noteRepository.save(new Note("title1", "content1", user));
-        noteRepository.save(new Note("title2", "content2", user));
-        // when
-        List<Note> notes = noteService.findByUser(user);
-        // then
-        then(notes.size()).isEqualTo(2);
-        Note note1 = notes.get(0);
-        Note note2 = notes.get(1);
+    void givenNothing_WhenRequestingNoteListReturnNoteList() {
+        // Given
+        User user = createUser();
+        Note note = createNote(user, "새로운 노트", "새로운 노트입니다.");
+        given(noteRepository.findByUserOrderByIdDesc(user))
+                .willReturn(List.of(note));
 
-        // note1 = title2
-        then(note1.getUser().getUsername()).isEqualTo("username");
-        then(note1.getTitle()).isEqualTo("title2"); // 가장 늦게 insert된 데이터가 먼저 나와야합니다.
-        then(note1.getContent()).isEqualTo("content2");
-        // note2 = title1
-        then(note2.getUser().getUsername()).isEqualTo("username");
-        then(note2.getTitle()).isEqualTo("title1");
-        then(note2.getContent()).isEqualTo("content1");
+        // When
+        List<NoteDto> result = sut.findByUser(user);
+
+        // Then
+        Assertions.assertThat(result).hasSize(1);
+        Assertions.assertThat(result)
+                .element(0)
+                .isEqualTo(NoteDto.fromEntity(note));
     }
 
     @Test
-    void findByUser_어드민이_조회() {
-        // given
-        User admin = userRepository.save(new User("admin", "password", "ROLE_ADMIN"));
-        User user1 = userRepository.save(new User("username", "password", "ROLE_USER"));
-        User user2 = userRepository.save(new User("username2", "password", "ROLE_USER"));
-        noteRepository.save(new Note("title1", "content1", user1));
-        noteRepository.save(new Note("title2", "content2", user1));
-        noteRepository.save(new Note("title3", "content3", user2));
-        // when
-        List<Note> notes = noteService.findByUser(admin);
-        // then
-        then(notes.size()).isEqualTo(3);
-        Note note1 = notes.get(0);
-        Note note2 = notes.get(1);
-        Note note3 = notes.get(2);
+    void givenNullUser_whenRequestingNoteList_thenThrowsException() {
+        // Given
+        User user = null;
 
-        // note1 = title3
-        then(note1.getUser().getUsername()).isEqualTo("username2");
-        then(note1.getTitle()).isEqualTo("title3"); // 가장 늦게 insert된 데이터가 먼저 나와야합니다.
-        then(note1.getContent()).isEqualTo("content3");
-        // note2 = title2
-        then(note2.getUser().getUsername()).isEqualTo("username");
-        then(note2.getTitle()).isEqualTo("title2");
-        then(note2.getContent()).isEqualTo("content2");
-        // note3 = title1
-        then(note3.getUser().getUsername()).isEqualTo("username");
-        then(note3.getTitle()).isEqualTo("title1");
-        then(note3.getContent()).isEqualTo("content1");
+        // When
+        Throwable thrown = catchThrowable(() -> sut.findByUser(user));
+
+        // Then
+        Assertions.assertThat(thrown)
+                .isInstanceOf(CustomErrorException.class)
+                .hasMessage(ErrorCode.UserNotFoundException.getMessage());
     }
 
     @Test
-    void saveNote() {
-        // given
-        User user = userRepository.save(new User("username", "password", "ROLE_USER"));
-        // when
-        noteService.saveNote(user, "title1", "content1");
-        // then
-        then(noteRepository.count()).isOne();
+    void givenNewNote_whenSavingNewNote_thenSaveNewNoteAndReturnNoteDto() {
+        // Given
+        User user = createUser();
+        Note note = createNote(user, "새로운 노트", "새로운 노트입니다.");
+        NoteRequestDto noteRequestDto =
+                NoteRequestDto.builder()
+                        .title("새로운 노트")
+                        .content("새로운 노트입니다.")
+                        .build();
+
+        given(noteRepository.save(any())).willReturn(note);
+
+
+        // When
+        NoteDto result = sut.saveNote(user, noteRequestDto);
+
+        // Then
+        Assertions.assertThat(result.getId()).isEqualTo(note.getId());
+        Assertions.assertThat(result.getTitle()).isEqualTo(note.getTitle());
+        Assertions.assertThat(result.getContent()).isEqualTo(note.getContent());
+        Assertions.assertThat(result.getCreatedAt()).isEqualTo(note.getCreatedAt());
+        Assertions.assertThat(result.getUpdatedAt()).isEqualTo(note.getUpdatedAt());
     }
 
     @Test
-    void deleteNote() {
-        User user = userRepository.save(new User("username", "password", "ROLE_USER"));
-        Note note = noteRepository.save(new Note("title1", "content1", user));
-        noteService.deleteNote(user, note.getId());
-        // then
-        then(noteRepository.count()).isZero();
+    void givenNullUser_whenSavingNewNote_thenThrowsException() {
+        // Given
+        User user = null;
+        Note note = createNote(user, "새로운 노트", "새로운 노트입니다.");
+        NoteRequestDto noteRequestDto =
+                NoteRequestDto.builder()
+                        .title("새로운 노트")
+                        .content("새로운 노트입니다.")
+                        .build();
+
+        // When
+        Throwable thrown = catchThrowable(() -> sut.saveNote(user, noteRequestDto));
+
+        // Then
+        Assertions.assertThat(thrown)
+                .isInstanceOf(CustomErrorException.class)
+                .hasMessage(ErrorCode.UserNotFoundException.getMessage());
     }
+
+    @Test
+    void givenNullUser_whenDeletingNote_thenThrowsException() {
+        // Given
+        User user = null;
+
+        // When
+        Throwable thrown = catchThrowable(() -> sut.deleteNote(user, 1L));
+
+        // Then
+        Assertions.assertThat(thrown)
+                .isInstanceOf(CustomErrorException.class)
+                .hasMessage(ErrorCode.UserNotFoundException.getMessage());
+    }
+
+    @Test
+    void givenNoExistNoteId_whenDeletingNote_thenThrowsException() {
+        // Given
+        User user = createUser();
+
+        // When
+        given(noteRepository.findByIdAndUser(2L, user))
+                .willThrow(new CustomErrorException(ErrorCode.NoSuchNoteExistException));
+        Throwable thrown = catchThrowable(() -> sut.deleteNote(user, 2L));
+
+        // Then
+        Assertions.assertThat(thrown)
+                .isInstanceOf(CustomErrorException.class)
+                .hasMessage(ErrorCode.NoSuchNoteExistException.getMessage());
+    }
+
+    private User createUser() {
+        return User.of(
+                1L,
+                "minnnisu",
+                "password12#",
+                "ROLE_USER",
+                "minnnisu",
+                "minnnisu@minnnisu.com"
+        );
+    }
+
+    private Note createNote(User user, String title, String content) {
+        return Note.of(
+                1L,
+                title,
+                content,
+                user,
+                LocalDateTime.of(2023, 1, 1, 14, 0, 0),
+                LocalDateTime.of(2023, 1, 1, 16, 0, 0)
+        );
+
+    }
+
 }
