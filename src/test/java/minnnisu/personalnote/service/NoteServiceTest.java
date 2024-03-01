@@ -30,7 +30,7 @@ class NoteServiceTest {
     NoteRepository noteRepository;
 
     @Test
-    void givenNothing_WhenRequestingNoteListReturnNoteList() {
+    void givenNothing_whenRequestingNoteList_thenReturnNoteList() {
         // Given
         User user = createUser();
         Note note = createNote(user, "새로운 노트", "새로운 노트입니다.");
