@@ -111,16 +111,6 @@ class ApiNoteControllerTest {
                 .andExpect(content().json(responseBody));
     }
 
-    private NoteUserDto createNoteDto(String title, String content) {
-        return NoteUserDto.of(
-                1L,
-                title,
-                content,
-                LocalDateTime.of(2023, 1, 1, 14, 0, 0),
-                LocalDateTime.of(2023, 1, 1, 16, 0, 0)
-        );
-    }
-
     @WithMockUser
     @Test
     void givenNoteId_whenDeletingNote_thenReturnSuccess() throws Exception {
@@ -155,5 +145,15 @@ class ApiNoteControllerTest {
                         .param("id", "3"))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(responseBody));
+    }
+
+    private NoteUserDto createNoteDto(String title, String content) {
+        return NoteUserDto.of(
+                1L,
+                title,
+                content,
+                LocalDateTime.of(2023, 1, 1, 14, 0, 0),
+                LocalDateTime.of(2023, 1, 1, 16, 0, 0)
+        );
     }
 }
