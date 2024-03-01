@@ -22,8 +22,11 @@ public class NoticeService {
     private final NoticeRepository noticeRepository;
 
     @Transactional(readOnly = true)
-    public List<Notice> findAll() {
-        return noticeRepository.findAll(Sort.by(Direction.DESC, "id"));
+    public List<NoticeDto> findAll() {
+        return noticeRepository.findAll(Sort.by(Direction.DESC, "id"))
+                .stream()
+                .map(NoticeDto::fromEntity)
+                .toList();
     }
 
     public NoticeDto saveNotice(NoticeRequestDto noticeRequestDto) {

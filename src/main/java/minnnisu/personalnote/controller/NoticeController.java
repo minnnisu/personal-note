@@ -1,7 +1,7 @@
 package minnnisu.personalnote.controller;
 
 import lombok.RequiredArgsConstructor;
-import minnnisu.personalnote.domain.Notice;
+import minnnisu.personalnote.dto.notice.NoticeDto;
 import minnnisu.personalnote.service.NoticeService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,7 @@ public class NoticeController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public String getNotice(Model model) {
-        List<Notice> notices = noticeService.findAll();
+        List<NoticeDto> notices = noticeService.findAll();
         model.addAttribute("notices", notices);
         return "notice/index";
     }
