@@ -1,6 +1,7 @@
 package minnnisu.personalnote.config;
 
 import lombok.RequiredArgsConstructor;
+import minnnisu.personalnote.dto.notice.NoticeRequestDto;
 import minnnisu.personalnote.dto.signup.SignUpRequestDto;
 import minnnisu.personalnote.dto.signup.SignupResponseDto;
 import minnnisu.personalnote.service.NoteService;
@@ -56,7 +57,9 @@ public class InitializeDefaultConfig {
                 .email("mine1234@naver.com")
                 .build();
         userService.signupAdmin(signUpRequestDto);
-        noticeService.saveNotice("환영합니다.", "환영합니다 여러분");
-        noticeService.saveNotice("노트 작성 방법 공지", "1. 회원가입\n2. 로그인\n3. 노트 작성\n4. 저장\n* 본인 외에는 게시글을 볼 수 없습니다.");
+
+        noticeService.saveNotice(NoticeRequestDto.of("환영합니다.", "환영합니다 여러분"));
+        noticeService.saveNotice(NoticeRequestDto.of("노트 작성 방법 공지", "1. 회원가입\n2. 로그인\n3. 노트 작성\n4. 저장\n* 본인 외에는 게시글을 볼 수 없습니다."));
+
     }
 }
