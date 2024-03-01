@@ -1,10 +1,9 @@
 package minnnisu.personalnote.controller;
 
 import lombok.RequiredArgsConstructor;
-import minnnisu.personalnote.dto.note.NoteDto;
+import minnnisu.personalnote.dto.note.NoteAdminDto;
 import minnnisu.personalnote.service.NoteService;
-import minnnisu.personalnote.domain.User;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,15 +17,10 @@ import java.util.List;
 public class AdminController {
     private final NoteService noteService;
 
-    /**
-     * 관리자인 경우 노트 조회
-     *
-     * @ return index.html
-     */
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public String getNoteAdmin(Authentication authentication, Model model) {
-        User user = (User) authentication.getPrincipal();
-        List<NoteDto> notes = noteService.findByUser(user);
+    public String getNoteAdmin(Model model) {
+        List<NoteAdminDto> notes = noteService.findAll();
         model.addAttribute("notes", notes);
         return "admin/index";
     }
