@@ -7,9 +7,9 @@ import minnnisu.personalnote.constant.ErrorCode;
 import minnnisu.personalnote.dto.ErrorResponseDto;
 import minnnisu.personalnote.dto.NotValidRequestErrorResponseDto;
 import minnnisu.personalnote.dto.note.NoteDeleteResponseDto;
-import minnnisu.personalnote.dto.note.NoteDto;
 import minnnisu.personalnote.dto.note.NoteRequestDto;
 import minnnisu.personalnote.dto.note.NoteSaveResponseDto;
+import minnnisu.personalnote.dto.note.NoteUserDto;
 import minnnisu.personalnote.exception.CustomErrorException;
 import minnnisu.personalnote.service.NoteService;
 import org.junit.jupiter.api.Test;
@@ -25,12 +25,11 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,7 +41,7 @@ class ApiNoteControllerTest {
 
     private final MockMvc mockMvc;
 
-    public ApiNoteControllerTest(@Autowired MockMvc mockMvc){
+    public ApiNoteControllerTest(@Autowired MockMvc mockMvc) {
         this.mockMvc = mockMvc;
     }
 
@@ -68,10 +67,10 @@ class ApiNoteControllerTest {
         String responseBody = objectMapper.writeValueAsString(NoteSaveResponseDto.fromDto(createNoteDto(title, content)));
 
         mockMvc.perform(
-                post("/api/note").with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody)
-        )
+                        post("/api/note").with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestBody)
+                )
                 .andExpect(status().isCreated())
                 .andExpect(content().json(responseBody));
 
@@ -112,8 +111,8 @@ class ApiNoteControllerTest {
                 .andExpect(content().json(responseBody));
     }
 
-    private NoteDto createNoteDto(String title, String content) {
-        return NoteDto.of(
+    private NoteUserDto createNoteDto(String title, String content) {
+        return NoteUserDto.of(
                 1L,
                 title,
                 content,
@@ -124,9 +123,9 @@ class ApiNoteControllerTest {
 
     @WithMockUser
     @Test
-    void givenNoteId_whenDeletingNote_thenReturnSuccess() throws Exception{
+    void givenNoteId_whenDeletingNote_thenReturnSuccess() throws Exception {
         // Given
-        doNothing().when(noteService).deleteNote(any(),any());
+        doNothing().when(noteService).deleteNote(any(), any());
 
         // When & Then
         NoteDeleteResponseDto noteDeleteResponseDto =
@@ -134,16 +133,16 @@ class ApiNoteControllerTest {
         String responseBody = new ObjectMapper().writeValueAsString(noteDeleteResponseDto);
 
         mockMvc.perform(delete("/api/note").with(csrf())
-                .param("id", "1"))
+                        .param("id", "1"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(responseBody));
     }
 
     @WithMockUser
     @Test
-    void givenNotExistNoteId_whenDeletingNote_thenReturnError() throws Exception{
+    void givenNotExistNoteId_whenDeletingNote_thenReturnError() throws Exception {
         // Given
-        doThrow(new CustomErrorException(ErrorCode.NoSuchNoteExistException)).when(noteService).deleteNote(any(),any());
+        doThrow(new CustomErrorException(ErrorCode.NoSuchNoteExistException)).when(noteService).deleteNote(any(), any());
 
         // When & Then
         ErrorResponseDto errorResponseDto = ErrorResponseDto

@@ -1,7 +1,6 @@
 package minnnisu.personalnote.dto.note;
 
 import lombok.*;
-import minnnisu.personalnote.domain.Note;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;

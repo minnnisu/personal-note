@@ -18,13 +18,13 @@ public class NoteSaveResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static NoteSaveResponseDto fromDto(NoteDto noteDto) {
+    public static NoteSaveResponseDto fromDto(NoteUserDto noteUserDto) {
         return NoteSaveResponseDto.builder()
-                .id(noteDto.getId())
-                .title(noteDto.getTitle())
-                .content(noteDto.getContent())
-                .createdAt(noteDto.getCreatedAt())
-                .updatedAt(noteDto.getUpdatedAt())
+                .id(noteUserDto.getId())
+                .title(noteUserDto.getTitle())
+                .content(noteUserDto.getContent())
+                .createdAt(noteUserDto.getCreatedAt())
+                .updatedAt(noteUserDto.getUpdatedAt())
                 .build();
     }
 }

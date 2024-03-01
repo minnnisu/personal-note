@@ -11,15 +11,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
-public class NoteDto {
+public class NoteUserDto {
     private Long id;
     private String title;
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static NoteDto fromEntity(Note note) {
-        return NoteDto.builder()
+    public static NoteUserDto fromEntity(Note note) {
+        return NoteUserDto.builder()
                 .id(note.getId())
                 .title(note.getTitle())
                 .content(note.getContent())
@@ -28,14 +28,14 @@ public class NoteDto {
                 .build();
     }
 
-    public static NoteDto of(
+    public static NoteUserDto of(
             Long id,
             String title,
             String content,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
     ) {
-        return NoteDto.builder()
+        return NoteUserDto.builder()
                 .id(id)
                 .title(title)
                 .content(content)

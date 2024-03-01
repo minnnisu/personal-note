@@ -3,8 +3,8 @@ package minnnisu.personalnote.service;
 import minnnisu.personalnote.constant.ErrorCode;
 import minnnisu.personalnote.domain.Note;
 import minnnisu.personalnote.domain.User;
-import minnnisu.personalnote.dto.note.NoteDto;
 import minnnisu.personalnote.dto.note.NoteRequestDto;
+import minnnisu.personalnote.dto.note.NoteUserDto;
 import minnnisu.personalnote.exception.CustomErrorException;
 import minnnisu.personalnote.repository.NoteRepository;
 import org.assertj.core.api.Assertions;
@@ -38,13 +38,13 @@ class NoteServiceTest {
                 .willReturn(List.of(note));
 
         // When
-        List<NoteDto> result = sut.findByUser(user);
+        List<NoteUserDto> result = sut.findByUser(user);
 
         // Then
         Assertions.assertThat(result).hasSize(1);
         Assertions.assertThat(result)
                 .element(0)
-                .isEqualTo(NoteDto.fromEntity(note));
+                .isEqualTo(NoteUserDto.fromEntity(note));
     }
 
     @Test
@@ -76,7 +76,7 @@ class NoteServiceTest {
 
 
         // When
-        NoteDto result = sut.saveNote(user, noteRequestDto);
+        NoteUserDto result = sut.saveNote(user, noteRequestDto);
 
         // Then
         Assertions.assertThat(result.getId()).isEqualTo(note.getId());
