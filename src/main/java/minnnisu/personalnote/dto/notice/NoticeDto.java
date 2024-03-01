@@ -26,4 +26,20 @@ public class NoticeDto {
                 .updatedAt(notice.getUpdatedAt())
                 .build();
     }
+
+    public static NoticeDto of(
+            Long id,
+            String title,
+            String content,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
+    ) {
+        return NoticeDto.builder()
+                .id(id)
+                .title(title)
+                .content(content)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
+    }
 }
