@@ -1,7 +1,11 @@
 package minnnisu.personalnote.service;
 
 import lombok.RequiredArgsConstructor;
+import minnnisu.personalnote.constant.ErrorCode;
 import minnnisu.personalnote.domain.Notice;
+import minnnisu.personalnote.dto.notice.NoticeDto;
+import minnnisu.personalnote.dto.notice.NoticeRequestDto;
+import minnnisu.personalnote.exception.CustomErrorException;
 import minnnisu.personalnote.repository.NoticeRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -22,11 +26,18 @@ public class NoticeService {
         return noticeRepository.findAll(Sort.by(Direction.DESC, "id"));
     }
 
-    public Notice saveNotice(String title, String content) {
-        return noticeRepository.save(new Notice(title, content));
+    public NoticeDto saveNotice(NoticeRequestDto noticeRequestDto) {
+        Notice notice = noticeRepository.save(new Notice(
+                noticeRequestDto.getTitle(),
+                noticeRequestDto.getContent()
+        ));
+
+        return NoticeDto.fromEntity(notice);
     }
 
     public void deleteNotice(Long id) {
-        noticeRepository.findById(id).ifPresent(noticeRepository::delete);
+        Notice notice = noticeRepository.findById(id)
+                .orElseThrow(() -> new CustomErrorException(ErrorCode.NoSuchNoticeExistException));
+        noticeRepository.delete(notice);
     }
 }
