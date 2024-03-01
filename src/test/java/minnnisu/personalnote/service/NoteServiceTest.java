@@ -42,9 +42,11 @@ class NoteServiceTest {
 
         // Then
         Assertions.assertThat(result).hasSize(1);
-        Assertions.assertThat(result)
-                .element(0)
-                .isEqualTo(NoteUserDto.fromEntity(note));
+        Assertions.assertThat(result.get(0).getId()).isEqualTo(NoteUserDto.fromEntity(note).getId());
+        Assertions.assertThat(result.get(0).getTitle()).isEqualTo(NoteUserDto.fromEntity(note).getTitle());
+        Assertions.assertThat(result.get(0).getContent()).isEqualTo(NoteUserDto.fromEntity(note).getContent());
+        Assertions.assertThat(result.get(0).getCreatedAt()).isEqualTo(NoteUserDto.fromEntity(note).getCreatedAt());
+        Assertions.assertThat(result.get(0).getUpdatedAt()).isEqualTo(NoteUserDto.fromEntity(note).getUpdatedAt());
     }
 
     @Test
