@@ -37,6 +37,9 @@ public enum ErrorCode {
     NoSuchNoteExistException(
             HttpStatus.NOT_FOUND, "존재하지 않은 노트입니다."
     ),
+    NoSuchNoticeExistException(
+            HttpStatus.NOT_FOUND, "존재하지 않은 공지사항입니다."
+    ),
     QueryParamTypeMismatchError(
             HttpStatus.BAD_REQUEST, "해당 쿼리 파라미터의 타입이 올바르지 않습니다."
     ),
