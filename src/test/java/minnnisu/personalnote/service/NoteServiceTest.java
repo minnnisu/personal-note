@@ -48,20 +48,6 @@ class NoteServiceTest {
     }
 
     @Test
-    void givenNullUser_whenRequestingNoteList_thenThrowsException() {
-        // Given
-        User user = null;
-
-        // When
-        Throwable thrown = catchThrowable(() -> sut.findByUser(user));
-
-        // Then
-        Assertions.assertThat(thrown)
-                .isInstanceOf(CustomErrorException.class)
-                .hasMessage(ErrorCode.UserNotFoundException.getMessage());
-    }
-
-    @Test
     void givenNewNote_whenSavingNewNote_thenSaveNewNoteAndReturnNoteDto() {
         // Given
         User user = createUser();
@@ -84,40 +70,6 @@ class NoteServiceTest {
         Assertions.assertThat(result.getContent()).isEqualTo(note.getContent());
         Assertions.assertThat(result.getCreatedAt()).isEqualTo(note.getCreatedAt());
         Assertions.assertThat(result.getUpdatedAt()).isEqualTo(note.getUpdatedAt());
-    }
-
-    @Test
-    void givenNullUser_whenSavingNewNote_thenThrowsException() {
-        // Given
-        User user = null;
-        Note note = createNote(user, "새로운 노트", "새로운 노트입니다.");
-        NoteRequestDto noteRequestDto =
-                NoteRequestDto.builder()
-                        .title("새로운 노트")
-                        .content("새로운 노트입니다.")
-                        .build();
-
-        // When
-        Throwable thrown = catchThrowable(() -> sut.saveNote(user, noteRequestDto));
-
-        // Then
-        Assertions.assertThat(thrown)
-                .isInstanceOf(CustomErrorException.class)
-                .hasMessage(ErrorCode.UserNotFoundException.getMessage());
-    }
-
-    @Test
-    void givenNullUser_whenDeletingNote_thenThrowsException() {
-        // Given
-        User user = null;
-
-        // When
-        Throwable thrown = catchThrowable(() -> sut.deleteNote(user, 1L));
-
-        // Then
-        Assertions.assertThat(thrown)
-                .isInstanceOf(CustomErrorException.class)
-                .hasMessage(ErrorCode.UserNotFoundException.getMessage());
     }
 
     @Test

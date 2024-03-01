@@ -30,7 +30,6 @@ public class NoteService {
     }
 
     public List<NoteUserDto> findByUser(User user) {
-        validateUserExist(user);
         List<Note> notes = noteRepository.findByUserOrderByIdDesc(user);
 
         return notes
@@ -40,7 +39,6 @@ public class NoteService {
     }
 
     public NoteUserDto saveNote(User user, NoteRequestDto noteRequestDto) {
-        validateUserExist(user);
         Note note = noteRepository.save(new Note(
                 noteRequestDto.getTitle(),
                 noteRequestDto.getContent(),
@@ -54,11 +52,5 @@ public class NoteService {
         Note note = noteRepository.findByIdAndUser(noteId, user)
                 .orElseThrow(() -> new CustomErrorException(ErrorCode.NoSuchNoteExistException));
         noteRepository.delete(note);
-    }
-
-    void validateUserExist(User user) {
-        if (user == null) {
-            throw new CustomErrorException(ErrorCode.UserNotFoundException);
-        }
     }
 }
