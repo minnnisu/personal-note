@@ -5,6 +5,7 @@ import minnnisu.personalnote.constant.ErrorCode;
 import minnnisu.personalnote.domain.Note;
 import minnnisu.personalnote.domain.User;
 import minnnisu.personalnote.dto.note.NoteAdminDto;
+import minnnisu.personalnote.dto.note.NoteDetailDto;
 import minnnisu.personalnote.dto.note.NoteRequestDto;
 import minnnisu.personalnote.dto.note.NoteUserDto;
 import minnnisu.personalnote.exception.CustomErrorException;
@@ -52,5 +53,10 @@ public class NoteService {
         Note note = noteRepository.findByIdAndUser(noteId, user)
                 .orElseThrow(() -> new CustomErrorException(ErrorCode.NoSuchNoteExistException));
         noteRepository.delete(note);
+    }
+
+    public NoteDetailDto getNoteDetail(Long id) {
+        Note note = noteRepository.getById(id);
+        return NoteDetailDto.fromEntity(note);
     }
 }

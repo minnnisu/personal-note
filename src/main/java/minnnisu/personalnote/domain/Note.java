@@ -25,6 +25,8 @@ public class Note {
     private Long id;
 
     private String title;
+
+    @Lob
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
