@@ -1,0 +1,20 @@
+.customer-send-message-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.customer-send-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.customer-send-message .handwritten-note-img {
+    width: 400px;
+}
+
+.customer-send-message .message {
+    font-weight: 500;
+    margin-top: 10px;
+}

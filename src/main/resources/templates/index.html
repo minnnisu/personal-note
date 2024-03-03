@@ -4,11 +4,16 @@
         xmlns:th="https://www.thymeleaf.org"
 >
 <head th:insert="fragments.html::header"></head>
+<link rel="stylesheet" href="/css/index.css">
 <body>
 <header th:insert="fragments.html::nav"></header>
-<div class="container">
-    <h1>개인 보안 노트 서비스</h1>
-    <h3>Spring Security 예제 프로젝트</h3>
+<div class="customer-send-message-container">
+    <div class="customer-send-message">
+        <img class="handwritten-note-img" src="/images/handwritten-note.jpg" alt="관련 이미지">
+        <p class="message">
+            당신의 일상을 기록하기 위한 노트를 작성해 보세요.
+        </p>
+    </div>
 </div>
 </body>
 </html>
