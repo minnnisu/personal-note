@@ -1,0 +1,44 @@
+#note-container {
+    margin: 0 auto;
+    width: 1200px;
+}
+
+#note-container-header {
+    font-size: 28px;
+    text-align: center;
+    margin-top: 50px;
+    font-weight: 500;
+}
+
+#no-note-item-container {
+    text-align: center;
+    margin-top: 16px;
+}
+
+#note-list-container .note-item.header {
+    font-weight: 500;
+}
+
+#note-list-container .note-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #969696;
+}
+
+#note-list-container .note-item .title,
+#note-list-container .note-item .content,
+#note-list-container .note-item .created-at {
+    margin: 0 10px;
+}
+
+#note-list-container .note-item .title {
+    display: inline-block;
+    width: 20rem;
+}
+
+#note-container-footer {
+    display: flex;
+    justify-content: flex-end;
+}
