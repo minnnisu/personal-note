@@ -1,0 +1,32 @@
+#note-register-container {
+    margin: 0 auto;
+    width: 1000px;
+    padding-top: 30px;
+}
+
+#note-register-container label {
+    display: block;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+#title, #content {
+    width: 100%;
+    display: block;
+    border: 1px solid #969696;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+#content {
+    height: 400px;
+}
+
+#note-save-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 0;
+}
+
+
+
