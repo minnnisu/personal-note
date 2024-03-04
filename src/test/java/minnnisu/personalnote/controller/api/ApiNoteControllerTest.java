@@ -56,7 +56,7 @@ class ApiNoteControllerTest {
                 .content(content)
                 .build();
 
-        given(noteService.saveNote(any(), any())).willReturn(createNoteDto(title, content));
+        given(noteService.saveNote(any(), any(), any())).willReturn(createNoteDto(title, content));
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,6 +16,7 @@ public class NoteSaveResponseDto {
     private Long id;
     private String title;
     private String content;
+    private List<String> imageName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -23,6 +25,7 @@ public class NoteSaveResponseDto {
                 .id(noteUserDto.getId())
                 .title(noteUserDto.getTitle())
                 .content(noteUserDto.getContent())
+                .imageName(noteUserDto.getImageName())
                 .createdAt(noteUserDto.getCreatedAt())
                 .updatedAt(noteUserDto.getUpdatedAt())
                 .build();

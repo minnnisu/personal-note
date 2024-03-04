@@ -49,6 +49,12 @@ public enum ErrorCode {
     AccessDeniedError(
             HttpStatus.FORBIDDEN, "접근할 수 없는 권한을 가진 사용자입니다."
     ),
+    NoImageNameError(
+            HttpStatus.BAD_REQUEST, "이미지 이름을 찾을 수 없습니다."
+    ),
+    NoImageFileError(
+            HttpStatus.BAD_REQUEST, "이미지 파일만 업로드할 수 있습니다."
+    ),
     InternalServerError(
             HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 오류가 발생하였습니다. 문제가 지속되면 관리자에게 문의하세요."
     );
