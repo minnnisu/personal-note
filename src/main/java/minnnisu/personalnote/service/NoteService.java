@@ -6,10 +6,7 @@ import minnnisu.personalnote.constant.ErrorCode;
 import minnnisu.personalnote.domain.Note;
 import minnnisu.personalnote.domain.NoteImage;
 import minnnisu.personalnote.domain.User;
-import minnnisu.personalnote.dto.note.NoteAdminDto;
-import minnnisu.personalnote.dto.note.NoteDetailDto;
-import minnnisu.personalnote.dto.note.NoteRequestDto;
-import minnnisu.personalnote.dto.note.NoteUserDto;
+import minnnisu.personalnote.dto.note.*;
 import minnnisu.personalnote.exception.CustomErrorException;
 import minnnisu.personalnote.repository.NoteImageRepository;
 import minnnisu.personalnote.repository.NoteRepository;
@@ -38,12 +35,12 @@ public class NoteService {
                 .toList();
     }
 
-    public List<NoteUserDto> findByUser(User user) {
+    public List<NoteSummaryDto> findByUser(User user) {
         List<Note> notes = noteRepository.findByUserOrderByIdDesc(user);
 
         return notes
                 .stream()
-                .map(NoteUserDto::fromEntity)
+                .map(NoteSummaryDto::fromEntity)
                 .toList();
     }
 

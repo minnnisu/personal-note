@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import minnnisu.personalnote.domain.User;
 import minnnisu.personalnote.dto.note.NoteDetailDto;
-import minnnisu.personalnote.dto.note.NoteSaveResponseDto;
+import minnnisu.personalnote.dto.note.NoteSummaryDto;
 import minnnisu.personalnote.service.NoteService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,10 +26,7 @@ public class NoteController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping
     public String getNote(@AuthenticationPrincipal User user, Model model) {
-        List<NoteSaveResponseDto> notes = noteService.findByUser(user)
-                .stream()
-                .map(NoteSaveResponseDto::fromDto)
-                .toList();
+        List<NoteSummaryDto> notes = noteService.findByUser(user);
         model.addAttribute("notes", notes);
 
         return "note/index";
