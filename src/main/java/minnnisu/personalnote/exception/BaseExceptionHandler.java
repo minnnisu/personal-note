@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import minnnisu.personalnote.constant.ErrorCode;
 import minnnisu.personalnote.dto.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,6 +27,14 @@ public class BaseExceptionHandler {
         ErrorResponseDto errorResponseDto = ErrorResponseDto.fromException(e);
         model.addAttribute("message", errorResponseDto.getMessage());
         return "error";
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    protected ResponseEntity<ErrorResponseDto> handleMaxUploadSizeExceededException() {
+        ErrorResponseDto errorResponseDto = ErrorResponseDto.of(
+                ErrorCode.SizeLimitExceededError.name(),
+                ErrorCode.SizeLimitExceededError.getMessage());
+        return new ResponseEntity<>(errorResponseDto, ErrorCode.SizeLimitExceededError.getHttpStatus());
     }
 
     @ExceptionHandler(value = {

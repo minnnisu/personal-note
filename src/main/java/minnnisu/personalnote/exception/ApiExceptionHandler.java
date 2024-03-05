@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.util.List;
 
@@ -24,6 +25,14 @@ public class ApiExceptionHandler {
     protected ResponseEntity<ErrorResponseDto> handleCustomErrorException(CustomErrorException e) {
         ErrorResponseDto errorResponseDto = ErrorResponseDto.fromException(e);
         return new ResponseEntity<>(errorResponseDto, e.getErrorCode().getHttpStatus());
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    protected ResponseEntity<ErrorResponseDto> handleMaxUploadSizeExceededException() {
+        ErrorResponseDto errorResponseDto = ErrorResponseDto.of(
+                ErrorCode.SizeLimitExceededError.name(),
+                ErrorCode.SizeLimitExceededError.getMessage());
+        return new ResponseEntity<>(errorResponseDto, ErrorCode.SizeLimitExceededError.getHttpStatus());
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -51,6 +60,7 @@ public class ApiExceptionHandler {
 
         return new ResponseEntity<>(notValidRequestErrorResponseDto, HttpStatus.BAD_REQUEST);
     }
+
 
     @ExceptionHandler(AccessDeniedException.class)
     protected ResponseEntity<ErrorResponseDto> handleAccessDeniedException(AccessDeniedException e) {
