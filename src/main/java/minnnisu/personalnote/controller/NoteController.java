@@ -42,7 +42,7 @@ public class NoteController {
     @GetMapping("/{id}")
     public String getNoteDetailPage(@PathVariable Long id, Model model) {
         NoteDetailDto noteDetailDto = noteService.getNoteDetail(id);
-        model.addAttribute(noteDetailDto);
+        model.addAttribute("note", noteDetailDto);
         return "note/detail";
     }
 }

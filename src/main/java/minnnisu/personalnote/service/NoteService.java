@@ -96,6 +96,7 @@ public class NoteService {
 
     public NoteDetailDto getNoteDetail(Long id) {
         Note note = noteRepository.getById(id);
-        return NoteDetailDto.fromEntity(note);
+        List<NoteImage> noteImages = noteImageRepository.findNoteImageByNote(note);
+        return NoteDetailDto.fromEntity(note, noteImages);
     }
 }

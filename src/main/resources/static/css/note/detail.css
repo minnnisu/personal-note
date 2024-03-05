@@ -1,0 +1,51 @@
+#note-detail-container {
+    margin: 0 auto;
+    width: 1000px;
+    padding-top: 30px;
+}
+
+#note-detail-container span {
+    display: block;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+#title, #content {
+    width: 100%;
+    display: block;
+    border: 1px solid #969696;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+#content {
+    height: 400px;
+}
+
+#note-detail-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 0;
+}
+
+#note-detail-button-container > * {
+    margin-left: 5px;
+}
+
+#note-detail-button-container .button-type-1.note-delete-button {
+    background: #ffdada;
+}
+
+#note-detail-button-container .button-type-1.note-delete-button:hover {
+    background: #ffd1d1;
+}
+
+#note-detail-images {
+    display: flex;
+    justify-content: center;
+}
+
+.note-detail-image {
+    width: 500px;
+    margin: 20px 0;
+}

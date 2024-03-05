@@ -7,7 +7,6 @@ import minnnisu.personalnote.dto.note.NoteDeleteResponseDto;
 import minnnisu.personalnote.dto.note.NoteRequestDto;
 import minnnisu.personalnote.dto.note.NoteSaveResponseDto;
 import minnnisu.personalnote.dto.note.NoteUserDto;
-import minnnisu.personalnote.repository.NoteRepository;
 import minnnisu.personalnote.service.NoteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ApiNoteController {
     private final NoteService noteService;
-    private final NoteRepository noteRepository;
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
