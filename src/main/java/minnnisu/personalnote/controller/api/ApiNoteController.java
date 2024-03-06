@@ -15,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,7 +28,7 @@ public class ApiNoteController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     public ResponseEntity<NoteSaveResponseDto> saveNote(@AuthenticationPrincipal User user,
-                                                        @RequestPart NoteRequestDto note,
+                                                        @Valid @RequestPart NoteRequestDto note,
                                                         @RequestPart(required = false) List<MultipartFile> files) {
 
         NoteUserDto noteUserDto = noteService.saveNote(user, note, files);
