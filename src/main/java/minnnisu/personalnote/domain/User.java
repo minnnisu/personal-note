@@ -14,8 +14,8 @@ import java.util.Collections;
 @Entity
 @Table
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Builder
 @ToString
 public class User implements UserDetails {
@@ -79,7 +79,7 @@ public class User implements UserDetails {
             String authority,
             String name,
             String email
-    ){
+    ) {
         return User.builder()
                 .id(id)
                 .username(username)
@@ -89,7 +89,6 @@ public class User implements UserDetails {
                 .email(email)
                 .build();
     }
-
 
 
 }
