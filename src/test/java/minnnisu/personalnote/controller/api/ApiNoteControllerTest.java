@@ -7,7 +7,7 @@ import minnnisu.personalnote.constant.ErrorCode;
 import minnnisu.personalnote.dto.ErrorResponseDto;
 import minnnisu.personalnote.dto.NotValidRequestErrorResponseDto;
 import minnnisu.personalnote.dto.note.NoteDeleteResponseDto;
-import minnnisu.personalnote.dto.note.NoteRequestDto;
+import minnnisu.personalnote.dto.note.NoteSaveRequestDto;
 import minnnisu.personalnote.dto.note.NoteSaveResponseDto;
 import minnnisu.personalnote.dto.note.NoteUserDto;
 import minnnisu.personalnote.exception.CustomErrorException;
@@ -51,7 +51,7 @@ class ApiNoteControllerTest {
         // Given
         String title = "새로운 노트";
         String content = "새로운 노트 입니다!";
-        NoteRequestDto noteRequestDto = NoteRequestDto.builder()
+        NoteSaveRequestDto noteSaveRequestDto = NoteSaveRequestDto.builder()
                 .title(title)
                 .content(content)
                 .build();
@@ -63,7 +63,7 @@ class ApiNoteControllerTest {
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
         // When & Then
-        String requestBody = new ObjectMapper().writeValueAsString(noteRequestDto);
+        String requestBody = new ObjectMapper().writeValueAsString(noteSaveRequestDto);
         String responseBody = objectMapper.writeValueAsString(NoteSaveResponseDto.fromDto(createNoteDto(title, content)));
 
         mockMvc.perform(
@@ -83,13 +83,13 @@ class ApiNoteControllerTest {
         // Given
         String title = "새로운 노트입니다. 새로운 노트입니다. 새로운 노트입니다. 새로운 노트입니다.";
         String content = "";
-        NoteRequestDto noteRequestDto = NoteRequestDto.builder()
+        NoteSaveRequestDto noteSaveRequestDto = NoteSaveRequestDto.builder()
                 .title(title)
                 .content(content)
                 .build();
 
         // When & Then
-        String requestBody = new ObjectMapper().writeValueAsString(noteRequestDto);
+        String requestBody = new ObjectMapper().writeValueAsString(noteSaveRequestDto);
         List<NotValidRequestErrorResponseDto.ErrorDescription> errorDescriptions = List.of(
                 new NotValidRequestErrorResponseDto.ErrorDescription("title", "최대 20자까지 입력 가능합니다."),
                 new NotValidRequestErrorResponseDto.ErrorDescription("content", "본문을 작성해세요.")

@@ -44,13 +44,13 @@ public class NoteService {
                 .toList();
     }
 
-    public NoteUserDto saveNote(User user, NoteRequestDto noteRequestDto, List<MultipartFile> files) {
+    public NoteUserDto saveNote(User user, NoteSaveRequestDto noteSaveRequestDto, List<MultipartFile> files) {
         List<NoteImage> noteImages = new ArrayList<>();
 
         // 노트 저장
         Note note = noteRepository.save(new Note(
-                noteRequestDto.getTitle(),
-                noteRequestDto.getContent(),
+                noteSaveRequestDto.getTitle(),
+                noteSaveRequestDto.getContent(),
                 user
         ));
 

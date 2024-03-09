@@ -3,10 +3,7 @@ package minnnisu.personalnote.controller.api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import minnnisu.personalnote.domain.User;
-import minnnisu.personalnote.dto.note.NoteDeleteResponseDto;
-import minnnisu.personalnote.dto.note.NoteRequestDto;
-import minnnisu.personalnote.dto.note.NoteSaveResponseDto;
-import minnnisu.personalnote.dto.note.NoteUserDto;
+import minnnisu.personalnote.dto.note.*;
 import minnnisu.personalnote.service.NoteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +25,7 @@ public class ApiNoteController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     public ResponseEntity<NoteSaveResponseDto> saveNote(@AuthenticationPrincipal User user,
-                                                        @Valid @RequestPart NoteRequestDto note,
+                                                        @Valid @RequestPart NoteSaveRequestDto note,
                                                         @RequestPart(required = false) List<MultipartFile> files) {
 
         NoteUserDto noteUserDto = noteService.saveNote(user, note, files);
