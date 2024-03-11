@@ -12,17 +12,17 @@ import java.util.List;
 public class NoteUpdateRequestDto {
     private String title;
     private String content;
-    private List<String> noteImages;
+    private List<String> deletionTargetImages;
 
     public static NoteUpdateRequestDto of(
             String title,
             String content,
-            List<String> noteImages
+            List<String> deletionTargetImages
     ) {
         return NoteUpdateRequestDto.builder()
                 .title(title)
                 .content(content)
-                .noteImages(noteImages)
+                .deletionTargetImages(deletionTargetImages)
                 .build();
     }
 }
