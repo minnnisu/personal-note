@@ -37,6 +37,9 @@ public enum ErrorCode {
     NoSuchNoteExistException(
             HttpStatus.NOT_FOUND, "존재하지 않은 노트입니다."
     ),
+    NoSuchNoteImageExistError(
+            HttpStatus.NOT_FOUND, "존재하지 않은 이미지입니다."
+    ),
     NoSuchNoticeExistException(
             HttpStatus.NOT_FOUND, "존재하지 않은 공지사항입니다."
     ),
