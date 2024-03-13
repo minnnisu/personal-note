@@ -10,6 +10,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -32,6 +33,19 @@ public class FileService {
         if (!file.delete()) {
             log.info("노트 이미지 파일의 삭제에 실패하였습니다.");
             log.info("이미지 위치:" + filePath);
+        }
+    }
+
+    public void deleteFiles(UploadPathType uploadPathType, List<String> fileNames) {
+        if (fileNames != null) {
+            for (String fileName : fileNames) {
+                String filePath = uploadPathType.getPath() + "/" + fileName;
+                File file = new File(filePath);
+                if (!file.delete()) {
+                    log.info("파일 삭제를 실패했습니다.");
+                    log.info("파일 위치:" + filePath);
+                }
+            }
         }
     }
 }

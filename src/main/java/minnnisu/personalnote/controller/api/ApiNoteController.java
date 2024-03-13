@@ -33,6 +33,16 @@ public class ApiNoteController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
+    @PutMapping("/{id}")
+    public ResponseEntity<NoteUpdateResponseDto> updateNote(@AuthenticationPrincipal User user,
+                                                            @PathVariable Long id,
+                                                            @Valid @RequestPart NoteUpdateRequestDto note,
+                                                            @RequestPart(required = false) List<MultipartFile> files) {
+        NoteUserDto noteUserDto = noteService.updateNote(user, id, note, files);
+        return new ResponseEntity<>(NoteUpdateResponseDto.fromDto(noteUserDto), HttpStatus.CREATED);
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping
     public ResponseEntity<?> deleteNote(@AuthenticationPrincipal User user, @RequestParam Long id) {
         noteService.deleteNote(user, id);
