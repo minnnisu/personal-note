@@ -45,6 +45,14 @@ public class NoteService {
                 .toList();
     }
 
+    public List<NoteImageDto> getNoteImages(User user, Long noteId) {
+        Note note = noteRepository.findByIdAndUser(noteId, user)
+                .orElseThrow(() -> new CustomErrorException(ErrorCode.NoSuchNoteExistException));
+        List<NoteImage> noteImages = noteImageRepository.findNoteImageByNote(note);
+
+        return noteImages.stream().map(NoteImageDto::fromEntity).toList();
+    }
+
     public void deleteNote(User user, Long noteId) {
         Note note = noteRepository.findByIdAndUser(noteId, user)
                 .orElseThrow(() -> new CustomErrorException(ErrorCode.NoSuchNoteExistException));

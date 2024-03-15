@@ -23,6 +23,14 @@ public class ApiNoteController {
     private final NoteService noteService;
 
     @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/image/{id}")
+    public ResponseEntity<NoteImageListResponseDto> getNoteImages(@AuthenticationPrincipal User user,
+                                                                  @PathVariable Long id) {
+        List<NoteImageDto> noteImages = noteService.getNoteImages(user, id);
+        return new ResponseEntity<>(NoteImageListResponseDto.fromDto(noteImages), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     public ResponseEntity<NoteSaveResponseDto> saveNote(@AuthenticationPrincipal User user,
                                                         @Valid @RequestPart NoteSaveRequestDto note,
