@@ -56,7 +56,13 @@ public class NoteService {
     public void deleteNote(User user, Long noteId) {
         Note note = noteRepository.findByIdAndUser(noteId, user)
                 .orElseThrow(() -> new CustomErrorException(ErrorCode.NoSuchNoteExistException));
+        List<NoteImage> noteImages = noteImageRepository.findNoteImageByNote(note);
+        List<String> noteImageNames = noteImages.stream().map(NoteImage::getImageName).toList();
+
+        noteImageRepository.deleteAll(noteImages);
         noteRepository.delete(note);
+
+        fileService.deleteFiles(UploadPathType.IMAGE, noteImageNames);
     }
 
     public NoteDetailDto getNoteDetail(Long id) {

@@ -28,10 +28,11 @@
              th:src="@{http://localhost:8080/images/note/{imageName}(imageName = ${imageName})}" alt="">
     </div>
     <div id="note-detail-button-container">
-        <button class="button-type-1 note-modify-button">수정</button>
-        <button class="button-type-1 note-delete-button">삭제</button>
+        <button class="button-type-1 note-modify-button"><a
+                th:href="@{http://localhost:8080/note/edit/{id}(id = ${note.id})}">수정</a></button>
+        <button class="button-type-1 note-delete-button" th:onclick="deleteNote()">삭제</button>
     </div>
 </div>
-<script src="/js/note/register.js"></script>
+<script src="/js/note/detail.js"></script>
 </body>
 </html>

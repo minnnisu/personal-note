@@ -45,4 +45,12 @@ public class NoteController {
         model.addAttribute("note", noteDetailDto);
         return "note/detail";
     }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/edit/{id}")
+    public String getNoteEditPage(@PathVariable Long id, Model model) {
+        NoteDetailDto noteDetailDto = noteService.getNoteDetail(id);
+        model.addAttribute("note", noteDetailDto);
+        return "note/edit";
+    }
 }

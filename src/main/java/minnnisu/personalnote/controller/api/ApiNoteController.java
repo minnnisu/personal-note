@@ -51,10 +51,9 @@ public class ApiNoteController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @DeleteMapping
-    public ResponseEntity<?> deleteNote(@AuthenticationPrincipal User user, @RequestParam Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteNote(@AuthenticationPrincipal User user, @PathVariable Long id) {
         noteService.deleteNote(user, id);
         return new ResponseEntity<>(new NoteDeleteResponseDto(), HttpStatus.OK);
-
     }
 }
